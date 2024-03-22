@@ -1,1 +1,1 @@
-This is the experimental code of the Machine Learning Course taught by Deyu Meng.
+This is the experimental code of Machine Learning Course taught by Deyu Meng in 2023-2024.
