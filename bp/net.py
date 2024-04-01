@@ -70,18 +70,10 @@ class net:
         for layer in self.layers:
             _y = layer.forward(_y)
         L = np.sum(.5*(_y-y)**2)
-        # print('Loss')
-        # print(.5*(_y-y)**2)
-        # print(np.sum(.5*(_y-y)**2))
         dLdy = np.expand_dims((_y-y), axis=0)
-        # print('dLdy')
-        # print(dLdy)
         for i in range(len(self.layers)):
             layer = self.layers[len(self.layers)-i-1]
             dLdy = layer.calc_grad(dLdy)
-            # print(dLdy.shape)
-            # print('dLdy')
-            # print(dLdy)
             layer.back_ward(lr, self.alpha)
         return np.mean(L)
 

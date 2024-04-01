@@ -5,7 +5,7 @@ class Linear:
     def __init__(self, in_ch, out_ch, bias=False):
         self.in_ch = in_ch
         self.out_ch = out_ch
-        self.W = np.random.random((out_ch, in_ch))
+        self.W = np.random.randn(out_ch, in_ch)
         self.dLdW = None
         self.bias = bias
         if self.bias:
@@ -44,19 +44,15 @@ class Linear:
         """
         dLdx = np.einsum('kin,ij->kjn', dLdy, self.W)
         self.dLdW = np.einsum('kin,jn->ijn', dLdy, self.x)
-        # print('dLdW')
-        # print(np.sum(self.dLdW, axis=-1))
 
         if self.bias:
             self.dLdb = dLdy.transpose((1, 0, 2))
-            # print('dLdb')
-            # print(np.sum(self.dLdb, axis=-1))
         return dLdx
 
     def back_ward(self, lr, alpha=.001):
-        self.W = self.W - lr * np.sum(self.dLdW, axis=-1) - 2*lr*alpha*self.W
+        self.W = self.W - lr * np.mean(self.dLdW, axis=-1) - 2*lr*alpha*self.W
         if self.bias:
-            self.b = self.b - lr * np.sum(self.dLdb, axis=-1)
+            self.b = self.b - lr * np.mean(self.dLdb, axis=-1)
 
     def show(self):
         print('Linear\n in:{} out:{} bias:{}\n'.format(self.in_ch, self.out_ch, self.bias))
@@ -135,6 +131,52 @@ class ReLU:
     def show(self):
         print('ReLU\n')
 
+class Softmax:
+    def __init__(self):
+        self.train_flag = False
+        self.x = None
+        self.y = None
+
+    def train(self):
+        self.train_flag = True
+
+    def test(self):
+        self.train_flag = False
+
+    def forward(self, x):
+        # print(x)
+
+        # print('run')
+        frac_ = np.sum(np.exp(x), axis=0)
+        # print('x')
+        # print(x)
+        # print('exp')
+        # print(frac_)
+        y = np.exp(x)/frac_
+        # print(y)
+        # exit(0)
+        if self.train_flag:
+            self.x = x
+            self.y = y
+        return y
+
+    def calc_grad(self, dLdy):
+        """
+        Calculate the gradient
+        :param dLdy: 1 * c * Batch_size
+        :return: dLdx: 1 * c * Batch_size
+        """
+        # dLdx = np.einsum('kin,in->kin', dLdy, self.y*(1-self.y))
+        dydx = -np.einsum('in,jn->ijn', self.y, self.y)
+        dLdx = np.einsum('kin,ijn->kjn', dLdy, dydx)
+        return dLdx
+
+    def back_ward(self, lr, alpha=1.):
+        pass
+
+    def show(self):
+        print('Softmax\n')
+
 if __name__=='__main__':
     print('Test Linear')
     block = Linear(2, 4, bias=True)
@@ -152,3 +194,16 @@ if __name__=='__main__':
     print(y.shape)
     dLdy = np.random.randn(1, 2, 3)
     block.calc_grad(dLdy)
+
+    print('Test Softmax')
+    block = Softmax()
+    block.train()
+    y = block.forward(x)
+    print(y.shape)
+    print(y)
+    dLdy = np.random.randn(1, 2, 3)
+    dLdx = block.calc_grad(dLdy)
+    print(dLdx.shape)
+
+
+

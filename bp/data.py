@@ -17,5 +17,5 @@ def generate_xor_data(
 
 if __name__=='__main__':
     x, y = generate_xor_data(5, 0, 2)
-    print(x)
-    print(y)
+    print(x.shape)
+    print(y.shape)
