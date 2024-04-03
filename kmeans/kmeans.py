@@ -1,5 +1,5 @@
 import numpy as np
-
+import matplotlib.pyplot as plt
 
 def k_means(a, k=3, lim_iter=100):
     n = len(a)
@@ -27,10 +27,38 @@ def k_means(a, k=3, lim_iter=100):
         else:
             run_flag = True
         centers = np.array(new_centers)
+    
+    return centers
+
+def predict_kmeans(X, centers):
+    y = []
+    for x in X:
+        dis = []
+        for center in centers:
+            dis.append((np.sum(x-center)**2))
+        y.append(np.argmin(dis))
+    return np.array(y)
 
 if __name__=='__main__':
-    a = np.random.randint(0, 100, (10, 2))
-    print(a)
-    k_means(a, k=3, lim_iter=10)
+    # a = np.random.randint(0, 100, (10, 2))
+    a = np.random.normal(0, 1, size=(10,2))
+    a = np.append(a, np.random.normal(2, 1, size=(10,2)), axis=0)
 
+    # print(a)
+    centers = k_means(a, k=2, lim_iter=100)
+    print(centers)
+
+    y = predict_kmeans(a, centers)
+
+    # print(y)
+
+    cs = ['r', 'g', 'b']
+
+    for i in range(len(centers)):
+        plt.scatter(a[y==i, 0], a[y==i,1], c=cs[i])
+        plt.scatter(centers[i, 0], centers[i, 1], c=cs[i], marker='+')
+
+    # plt.scatter(a[:, 0], a[:,1], c='b')
+    # plt.scatter(centers[:, 0], centers[:, 1], c='r', marker='+')
+    plt.show()
 
