@@ -4,24 +4,6 @@ from sklearn.preprocessing import StandardScaler
 from get_rand_data import *
 import matplotlib.pyplot as plt
 
-# class ovo_svm():
-#     def __init__(self, cls_num, in_dim, C=1e9):
-#         self.cls_num = cls_num
-#         self.in_dim = in_dim
-#         self.model = [ [LinearSVC(C) for j in range(cls_num) if i>j] for i in range(cls_num) ]
-#         print(self.model)
-#     def train(self, X, Y):
-#         for i in range(self.cls_num):
-#             for j in range(self.cls_num):
-#                 if i>j:
-#                     _X = X[(Y==i or Y==j), :]
-#                     _Y = Y[(Y==i or Y==j)]
-#                     self.model[i, j].fit(_X, _Y)
-#     def predict(self, X, Y):
-#         pass
-
-        
-
 if __name__=='__main__':
     # Read Data
 
@@ -55,10 +37,15 @@ if __name__=='__main__':
     p1, p2 = model.coef_[0]
     b = model.intercept_[0]
 
-    plt.plot(train_x, -p1/p2*train_x-b/p2, c='b')
+    plt.plot(train_x[:,0], -p1/p2*train_x[:,0]-b/p2, c='y', label='Predict Line')
+    plt.plot(train_x[:,0], 2-train_x[:,0], c='g', label='Idea Line')
 
     plt.scatter(train_x1[:,0], train_x1[:,1], marker='.', c='b')
     plt.scatter(train_x2[:,0], train_x2[:,1], marker='+', c='r')
+
+    print(train_x.shape)
+
+    plt.legend()
 
     plt.show()
 

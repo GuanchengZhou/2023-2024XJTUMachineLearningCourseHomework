@@ -7,8 +7,11 @@ def get_random_data(mu=(0,0), sigma=(1,1), n=10, label=1):
     return np.array(X), np.array(Y)
 
 if __name__=='__main__':
-    X1, Y1 = get_random_data((0,0), (1,1))
+    X1, Y1 = get_random_data((0,0), (1,1), n=25)
     plt.scatter(X1[:,0], X1[:,1], marker='.', c='b')
-    X2, Y2 = get_random_data((2, 2), (1, 1))
+    X2, Y2 = get_random_data((2, 2), (1, 1), n=25)
     plt.scatter(X2[:,0], X2[:,1], marker='+', c='r')
+    plt.plot(X1[:,0],2-X1[:,0], c='g', label='Idea Line')
+    plt.plot(X2[:, 0], 2 - X2[:, 0], c='g')
+    plt.legend()
     plt.show()
