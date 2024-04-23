@@ -5,3 +5,4 @@
 ./bp/cover
 ./SVM/figure
 ./SVM/report
+*.png
