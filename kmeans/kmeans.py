@@ -15,7 +15,9 @@ def k_means(a, k=3, lim_iter=100):
         print(centers)
         iter += 1
         delta = (np.repeat(np.expand_dims(a, axis=1), k, axis=1)-centers)
+        print('1', np.repeat(np.expand_dims(a, axis=1), k, axis=1).shape, '2', centers.shape)
         dis = np.einsum('ijk,ijk->ij', delta, delta)
+        print('dis', dis.shape)
         _class = np.argmin(dis, axis=1)
         print('class', _class)
         new_centers = []
