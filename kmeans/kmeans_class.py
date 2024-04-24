@@ -32,6 +32,15 @@ def linfty_distance(a, centers):
     dis = np.max(np.abs(delta), axis=2)
     return dis
 
+def cos_distance(a, centers):
+    """
+    Calculate cosine Distance
+    :param a: N*C
+    :param centers: K*C
+    :return: N*K
+    """
+    pass
+
 class kmeans:
     def __init__(self, k=3, distance_type='l2'):
         self.k = k
